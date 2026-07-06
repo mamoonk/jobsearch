@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     theirstack_api_key: str = ""
     serpapi_api_key: str = ""
 
-    backend_cors_origins: str = "http://localhost:3000"
+    backend_cors_origins: str = "http://localhost:3000,http://localhost:3001"
     backend_port: int = 8000
 
     rate_limit_requests_per_minute: int = 5
