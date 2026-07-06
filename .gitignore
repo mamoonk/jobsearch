@@ -1,0 +1,17 @@
+node_modules/
+.next/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+alembic/versions/*.py
+!alembic/versions/.gitkeep
+*.db
+*.sqlite3
+__pypackages__/
+venv/
+.venv/
