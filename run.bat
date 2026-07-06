@@ -12,14 +12,14 @@ set "CYAN=%ESC%[36m"
 set "RESET=%ESC%[0m"
 
 echo %CYAN%╔══════════════════════════════════════════╗
-echo ║         JobSearch AI — Launcher             ║
+echo ║         JobSearch AI - Launcher             ║
 echo ╚══════════════════════════════════════════╝%RESET%
 echo.
 
 :: ─── Detect Docker ───────────────────────────────
 where docker >nul 2>&1
 if %errorlevel% equ 0 (
-    echo %GREEN%[INFO] Docker detected — launching full stack%RESET%
+    echo %GREEN%[INFO] Docker detected - launching full stack%RESET%
     echo.
     if not exist .env (
         if exist .env.example (
@@ -50,7 +50,7 @@ if %errorlevel% equ 0 (
     exit /b
 )
 
-echo %YELLOW%[INFO] Docker not found — starting services directly%RESET%
+echo %YELLOW%[INFO] Docker not found - starting services directly%RESET%
 echo %YELLOW%[INFO] PostgreSQL + Redis required for full functionality%RESET%
 echo.
 
@@ -63,23 +63,11 @@ if not exist backend\.env (
 
 :: ─── Start Backend ───────────────────────────────
 echo %CYAN%[1/2] Starting backend on http://localhost:8000 ...%RESET%
-start "JobSearch-Backend" /B cmd /c "cd /d "%~dp0backend" && uvicorn app.main:app --reload --port 8000 2>&1"
-if %errorlevel% neq 0 (
-    echo %RED%[ERROR] Failed to start backend. Is uvicorn installed?%RESET%
-    echo   Run: pip install -r backend\requirements.txt
-    pause
-    exit /b
-)
+start "JobSearch-Backend" /D "backend" uvicorn app.main:app --reload --port 8000
 
 :: ─── Start Frontend ──────────────────────────────
 echo %CYAN%[2/2] Starting frontend on http://localhost:3000 ...%RESET%
-start "JobSearch-Frontend" /B cmd /c "cd /d "%~dp0frontend" && npm run dev 2>&1"
-if %errorlevel% neq 0 (
-    echo %RED%[ERROR] Failed to start frontend. Is npm installed?%RESET%
-    echo   Run: cd frontend ^&^& npm install
-    pause
-    exit /b
-)
+start "JobSearch-Frontend" /D "frontend" npm run dev
 
 echo.
 echo %GREEN%[DONE] Both services are starting:%RESET%
@@ -89,4 +77,5 @@ echo   Docs     : %CYAN%http://localhost:8000/docs%RESET%
 echo.
 echo %YELLOW%Close the terminal windows to stop the services.%RESET%
 echo.
+timeout /t 3 >nul
 start http://localhost:3000
